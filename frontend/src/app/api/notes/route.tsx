@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 // Define the Note type
@@ -22,14 +22,14 @@ const NoteSchema = z.object({
 
 // GET: Fetch all notes
 export async function GET() {
-  return NextResponse.json(notes);
+  return NextResponse.json({ notes });
 }
 
 // POST: Create a new note
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, content } = NoteSchema.parse(body); // Validate input
+    const { title, content } = NoteSchema.parse(body);
 
     const newNote: Note = {
       id: idCounter++,
@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
     notes.push(newNote);
     return NextResponse.json(newNote, { status: 201 });
   } catch (error) {
@@ -46,23 +47,18 @@ export async function POST(request: Request) {
 }
 
 // PUT: Update an existing note
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, title, content } = NoteSchema.extend({ id: z.number() }).parse(body); // Validate input
+    const { title, content } = NoteSchema.parse(body);
+    const id = parseInt(request.nextUrl.pathname.split("/").pop() || "");
 
     const index = notes.findIndex((note) => note.id === id);
-
     if (index === -1) {
       return NextResponse.json({ error: "Note not found" }, { status: 404 });
     }
 
-    notes[index] = {
-      ...notes[index],
-      title,
-      content,
-      updatedAt: new Date(),
-    };
+    notes[index] = { ...notes[index], title, content, updatedAt: new Date() };
 
     return NextResponse.json(notes[index]);
   } catch (error) {
@@ -71,13 +67,11 @@ export async function PUT(request: Request) {
 }
 
 // DELETE: Delete a note
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { id } = z.object({ id: z.number() }).parse(body); // Validate input
+    const id = parseInt(request.nextUrl.pathname.split("/").pop() || "");
 
     const index = notes.findIndex((note) => note.id === id);
-
     if (index === -1) {
       return NextResponse.json({ error: "Note not found" }, { status: 404 });
     }

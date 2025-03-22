@@ -10,7 +10,7 @@ import { AlertCircle } from "lucide-react";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function DashboardPage() {
-  const { data, error, mutate } = useSWR("/api/notes", fetcher);
+  const { data, error, mutate } = useSWR("", fetcher);
 
   if (error) {
     return (

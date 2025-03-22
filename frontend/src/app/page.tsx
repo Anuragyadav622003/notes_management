@@ -1,92 +1,86 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { NoteForm } from '@/components/note-form';
-import { Button } from '@/components/ui/button';
-import { Note } from '@/lib/utils';
+import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 
-export default function NotesPage() {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [editingNote, setEditingNote] = useState<Note | null>(null);
-
-  const fetchNotes = async () => {
-    try {
-      const response = await fetch('/api/notes');
-      const data = await response.json();
-      setNotes(data);
-    } catch (error) {
-      console.error('Fetch error:', error);
-    }
-  };
-
-  const deleteNote = async (id: number) => {
-    try {
-      await fetch('/api/notes', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      });
-      await fetchNotes();
-    } catch (error) {
-      console.error('Delete error:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchNotes();
-  }, []);
+export default function HomePage() {
+  const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">My Notes</h1>
-          <p className="text-gray-600">Organize your thoughts and ideas.</p>
-        </header>
+    <div className="min-h-screen bg-gray-50">
+      {/* Navbar */}
+     
 
-        <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-          <NoteForm
-            editingNote={editingNote}
-            setEditingNote={setEditingNote}
-            fetchNotes={fetchNotes}
-          />
-        </div>
-
-        <div className="space-y-4">
-          {notes.map((note) => (
-            <div
-              key={note.id}
-              className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-            >
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">{note.title}</h2>
-              <p className="text-gray-600 mb-4 whitespace-pre-wrap">{note.content}</p>
-              <div className="flex justify-between items-center text-sm text-gray-500">
-                <div>
-                  <span>Created: {new Date(note.createdAt).toLocaleString()}</span>
-                  <span className="mx-2">|</span>
-                  <span>Updated: {new Date(note.updatedAt).toLocaleString()}</span>
-                </div>
-                <div className="space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setEditingNote(note)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => deleteNote(note.id)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
+      {/* Hero Section */}
+      <div className="bg-white py-20">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            Welcome to NoteApp
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Organize your thoughts, ideas, and tasks effortlessly with NoteApp.
+          </p>
+          <div className="space-x-4">
+            {isAuthenticated ? (
+              <Link
+                href="/dashboard"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700"
+              >
+                Get Started
+              </Link>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Features Section */}
+      <div className="py-20 bg-gray-100">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Features
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Create Notes
+              </h3>
+              <p className="text-gray-600">
+                Easily create and save your notes in one place.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Edit Notes
+              </h3>
+              <p className="text-gray-600">
+                Update and modify your notes anytime.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Organize Your Thoughts
+              </h3>
+              <p className="text-gray-600">
+                Keep your ideas organized and accessible.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-white py-6">
+        <div className="max-w-6xl mx-auto px-4 text-center text-gray-600">
+          <p>&copy; 2023 NoteApp. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }

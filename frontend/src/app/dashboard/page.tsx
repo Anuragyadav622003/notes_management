@@ -61,7 +61,7 @@ export default function DashboardPage() {
             </svg>
           </div>
           <h2 className="text-xl font-semibold text-gray-900 mb-2">No Notes Yet</h2>
-          <p className="text-gray-600">You haven't created any notes yet.</p>
+          <p className="text-gray-600">You haven&apos;t created any notes yet.</p>
         </div>
       </div>
     );

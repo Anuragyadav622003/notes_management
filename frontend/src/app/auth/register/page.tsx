@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
@@ -20,17 +20,21 @@ const registerSchema = z.object({
     .regex(/[0-9]/, { message: "Password must contain at least one number" }),
 });
 
+// Define the TypeScript interface for form data
+type RegisterFormData = z.infer<typeof registerSchema>;
+
 export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  // Define the type for onSubmit
+  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     setLoading(true);
     setTimeout(() => {
       console.log("User Registered:", data);

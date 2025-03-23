@@ -42,6 +42,7 @@ export async function POST(request: Request) {
     notes.push(newNote);
     return NextResponse.json(newNote, { status: 201 });
   } catch (error) {
+    console.error("Error in POST:", error); // Logging for debugging
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 }
@@ -51,7 +52,7 @@ export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
     const { title, content } = NoteSchema.parse(body);
-    const id = parseInt(request.nextUrl.pathname.split("/").pop() || "");
+    const id = parseInt(request.nextUrl.pathname.split("/").pop() || "", 10);
 
     const index = notes.findIndex((note) => note.id === id);
     if (index === -1) {
@@ -62,6 +63,7 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json(notes[index]);
   } catch (error) {
+    console.error("Error in PUT:", error);
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 }
@@ -69,7 +71,7 @@ export async function PUT(request: NextRequest) {
 // DELETE: Delete a note
 export async function DELETE(request: NextRequest) {
   try {
-    const id = parseInt(request.nextUrl.pathname.split("/").pop() || "");
+    const id = parseInt(request.nextUrl.pathname.split("/").pop() || "", 10);
 
     const index = notes.findIndex((note) => note.id === id);
     if (index === -1) {
@@ -79,6 +81,7 @@ export async function DELETE(request: NextRequest) {
     const deletedNote = notes.splice(index, 1)[0];
     return NextResponse.json(deletedNote);
   } catch (error) {
+    console.error("Error in DELETE:", error);
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 }

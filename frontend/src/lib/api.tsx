@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "sonner";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -23,15 +24,15 @@ api.interceptors.request.use((config) => {
 // ✅ Global error handler
 const handleApiError = (error: any) => {
   const message = error.response?.data?.message || "Something went wrong. Please try again.";
+  toast.error(message);
   throw new Error(message); // Rethrow the error for further handling
 };
 
 // ✅ Register User
 export async function registerUser(name: string, email: string, password: string) {
   try {
-    console.log(name,email,password)
+    
     const response = await api.post("/auth/register", { name, email, password });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -52,42 +53,43 @@ export async function loginUser(email: string, password: string) {
   }
 }
 
-// ✅ Fetch Notes (No need to pass token manually)
+// ✅ Fetch Notes
 export async function fetchNotes(page = 1) {
-  try {
-    const response = await api.get(`/notes?page=${page}`);
-    return response.data;
-  } catch (error) {
-    handleApiError(error);
+    try {
+      const response = await api.get(`/notes?page=${page}`);
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
   }
-}
-
-// ✅ Create Note
-export async function createNote(title: string, content: string) {
-  try {
-    const response = await api.post("/notes", { title, content });
-    return response.data;
-  } catch (error) {
-    handleApiError(error);
+  
+  // ✅ Create Note
+  export async function createNote(title: string, content: string) {
+    try {
+        alert(title);
+      const response = await api.post("/notes", { title, content });
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
   }
-}
-
-// ✅ Update Note
-export async function updateNote(id: string, title: string, content: string) {
-  try {
-    const response = await api.put(`/notes/${id}`, { title, content });
-    return response.data;
-  } catch (error) {
-    handleApiError(error);
+  
+  // ✅ Update Note
+  export async function updateNote(id: number, title: string, content: string) {
+    try {
+      const response = await api.put(`/notes/${id}`, { title, content });
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
   }
-}
-
-// ✅ Delete Note
-export async function deleteNote(id: string) {
-  try {
-    const response = await api.delete(`/notes/${id}`);
-    return response.data;
-  } catch (error) {
-    handleApiError(error);
+  
+  // ✅ Delete Note
+  export async function deleteNote(id: number) {
+    try {
+      const response = await api.delete(`/notes/${id}`);
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
   }
-}

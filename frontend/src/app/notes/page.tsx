@@ -4,36 +4,33 @@ import { useEffect, useState } from 'react';
 import { NoteForm } from '@/components/note-form';
 import { Button } from '@/components/ui/button';
 import { Note } from '@/lib/utils';
+import { fetchNotes, deleteNote } from '@/lib/api'; // Import API functions
 
 export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
-const fetchNotes = async () => {
+  const loadNotes = async () => {
     try {
-      const response = await fetch('/api/notes');
-      const data = await response.json();
-      setNotes(Array.isArray(data.notes) ? data.notes : []); // Ensure it's always an array
+      const data = await fetchNotes();
+      setNotes(Array.isArray(data.notes) ? data.notes : []);
     } catch (error) {
-      console.error('Fetch error:', error);
-      setNotes([]); // Prevent further errors
+      console.error('Error fetching notes:', error);
+      setNotes([]);
     }
   };
-  const deleteNote = async (id: number) => {
+
+  const handleDeleteNote = async (id: number) => {
     try {
-      await fetch('/api/notes', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      });
-      await fetchNotes();
+      await deleteNote(id);
+      await loadNotes(); // Refresh list after deletion
     } catch (error) {
-      console.error('Delete error:', error);
+      console.error('Error deleting note:', error);
     }
   };
 
   useEffect(() => {
-    fetchNotes();
+    loadNotes();
   }, []);
 
   return (
@@ -48,14 +45,14 @@ const fetchNotes = async () => {
           <NoteForm
             editingNote={editingNote}
             setEditingNote={setEditingNote}
-            fetchNotes={fetchNotes}
+            fetchNotes={loadNotes}
           />
         </div>
 
         <div className="space-y-4">
-          {notes.map((note) => (
+          {notes.map((note,id) => (
             <div
-              key={note.id}
+              key={id}
               className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
             >
               <h2 className="text-xl font-semibold text-gray-900 mb-2">{note.title}</h2>
@@ -77,7 +74,7 @@ const fetchNotes = async () => {
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => deleteNote(note.id)}
+                    onClick={() => handleDeleteNote(id)}
                   >
                     Delete
                   </Button>
@@ -90,4 +87,3 @@ const fetchNotes = async () => {
     </div>
   );
 }
-

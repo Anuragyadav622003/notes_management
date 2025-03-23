@@ -1,17 +1,21 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Note } from '@/lib/utils';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Note } from "@/lib/utils";
+import { toast } from "sonner";
+import { createNote, updateNote } from "@/lib/api";
 
+// ✅ Define form schema
 const formSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  content: z.string().min(1, 'Content is required'),
+  title: z.string().min(1, "Title is required"),
+  content: z.string().min(1, "Content is required"),
 });
 
 interface NoteFormProps {
@@ -24,31 +28,34 @@ export function NoteForm({ editingNote, setEditingNote, fetchNotes }: NoteFormPr
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: editingNote?.title || '',
-      content: editingNote?.content || '',
+      title: "",
+      content: "",
     },
   });
+
+  useEffect(() => {
+    form.reset({
+      title: editingNote?.title || "",
+      content: editingNote?.content || "",
+    });
+  }, [editingNote, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (editingNote) {
-        await fetch('/api/notes', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: editingNote.id, ...values }),
-        });
+        await updateNote(editingNote.id, values.title, values.content);
+        toast.success("Note updated successfully!");
       } else {
-        await fetch('/api/notes', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values),
-        });
+        await createNote(values.title, values.content);
+        toast.success("Note created successfully!");
       }
+
       await fetchNotes();
       setEditingNote(null);
       form.reset();
     } catch (error) {
-      console.error('Submission error:', error);
+      console.error("Error:", error);
+      toast.error("Failed to save note. Please try again.");
     }
   };
 
@@ -60,9 +67,9 @@ export function NoteForm({ editingNote, setEditingNote, fetchNotes }: NoteFormPr
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700">Title</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Enter title" {...field} className="bg-gray-50" />
+                <Input placeholder="Enter title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -73,21 +80,17 @@ export function NoteForm({ editingNote, setEditingNote, fetchNotes }: NoteFormPr
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700">Content</FormLabel>
+              <FormLabel>Content</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Enter content"
-                  {...field}
-                  className="min-h-[150px] bg-gray-50"
-                />
+                <Textarea placeholder="Enter content" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <div className="flex gap-2">
-          <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-            {editingNote ? 'Update Note' : 'Add Note'}
+          <Button type="submit">
+            {editingNote ? "Update Note" : "Add Note"}
           </Button>
           {editingNote && (
             <Button

@@ -35,18 +35,22 @@ export default function RegisterForm() {
     setLoading(true);
   
     try {
-      const response = await registerUser(data.name,data.email,data.password);
+      const response = await registerUser(data.name, data.email, data.password);
       console.log("User registered:", response);
       toast.success("Registration successful!"); // Success toast
-      alert("Registration successful!");
     } catch (error: any) {
       console.error("Registration error:", error.response?.data || error.message);
-      toast.error(error.response?.data?.message || "Registration failed!");
+  
+      // Display a user-friendly error message
+      if (error.response?.status === 400 && error.response?.data?.message === "Email already exists") {
+        toast.error("This email is already registered. Please use a different email.");
+      } else {
+        toast.error("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-900">
       <Card className="w-full max-w-md p-6 shadow-lg">

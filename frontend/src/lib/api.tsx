@@ -75,7 +75,7 @@ export async function fetchNotes(page = 1) {
   }
   
   // ✅ Update Note
-  export async function updateNote(id: number, title: string, content: string) {
+  export async function updateNote(id: string, title: string, content: string) {
     try {
       const response = await api.put(`/notes/${id}`, { title, content });
       return response.data;
@@ -85,7 +85,7 @@ export async function fetchNotes(page = 1) {
   }
   
   // ✅ Delete Note
-  export async function deleteNote(id: number) {
+  export async function deleteNote(id: string) {
     try {
       const response = await api.delete(`/notes/${id}`);
       return response.data;

@@ -5,7 +5,14 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Note } from "@/lib/utils";
@@ -23,6 +30,7 @@ interface NoteFormProps {
   setEditingNote: (note: Note | null) => void;
   fetchNotes: () => Promise<void>;
 }
+
 
 export function NoteForm({ editingNote, setEditingNote, fetchNotes }: NoteFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,7 +51,7 @@ export function NoteForm({ editingNote, setEditingNote, fetchNotes }: NoteFormPr
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (editingNote) {
-        await updateNote(editingNote.id, values.title, values.content);
+        await updateNote(editingNote._id, values.title, values.content); // ✅ Use `_id`
         toast.success("Note updated successfully!");
       } else {
         await createNote(values.title, values.content);
@@ -89,9 +97,7 @@ export function NoteForm({ editingNote, setEditingNote, fetchNotes }: NoteFormPr
           )}
         />
         <div className="flex gap-2">
-          <Button type="submit">
-            {editingNote ? "Update Note" : "Add Note"}
-          </Button>
+          <Button type="submit">{editingNote ? "Update Note" : "Add Note"}</Button>
           {editingNote && (
             <Button
               type="button"

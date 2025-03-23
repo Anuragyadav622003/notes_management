@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export type Note = {
-  id: number;
+  _id: string;
   title: string;
   content: string;
   createdAt: string;

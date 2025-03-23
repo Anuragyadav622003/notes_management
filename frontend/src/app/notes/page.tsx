@@ -20,7 +20,7 @@ export default function NotesPage() {
     }
   };
 
-  const handleDeleteNote = async (id: number) => {
+  const handleDeleteNote = async (id: string) => {
     try {
       await deleteNote(id);
       await loadNotes(); // Refresh list after deletion
@@ -49,10 +49,10 @@ export default function NotesPage() {
           />
         </div>
 
-        <div className="space-y-4">
-          {notes.map((note,id) => (
+        {/* <div className="space-y-4">
+          {notes.map((note) => (
             <div
-              key={id}
+              key={note._id}
               className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
             >
               <h2 className="text-xl font-semibold text-gray-900 mb-2">{note.title}</h2>
@@ -74,7 +74,7 @@ export default function NotesPage() {
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDeleteNote(id)}
+                    onClick={() => handleDeleteNote(note._id)}
                   >
                     Delete
                   </Button>
@@ -82,7 +82,7 @@ export default function NotesPage() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

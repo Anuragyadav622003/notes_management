@@ -9,16 +9,16 @@ export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
-  const fetchNotes = async () => {
+const fetchNotes = async () => {
     try {
       const response = await fetch('/api/notes');
       const data = await response.json();
-      setNotes(data);
+      setNotes(Array.isArray(data.notes) ? data.notes : []); // Ensure it's always an array
     } catch (error) {
       console.error('Fetch error:', error);
+      setNotes([]); // Prevent further errors
     }
   };
-
   const deleteNote = async (id: number) => {
     try {
       await fetch('/api/notes', {
@@ -90,3 +90,4 @@ export default function NotesPage() {
     </div>
   );
 }
+

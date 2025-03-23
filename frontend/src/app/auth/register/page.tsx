@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Lock, Mail, User } from "lucide-react";
-
+import { registerUser } from "@/lib/api";
+import { toast } from "sonner";
 // Zod Validation Schema
 const registerSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -20,26 +21,30 @@ const registerSchema = z.object({
     .regex(/[0-9]/, { message: "Password must contain at least one number" }),
 });
 
-// Define the TypeScript interface for form data
-type RegisterFormData = z.infer<typeof registerSchema>;
-
 export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormData>({
+  } = useForm({
     resolver: zodResolver(registerSchema),
   });
 
-  // Define the type for onSubmit
-  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
+  const onSubmit = async (data: any) => {
     setLoading(true);
-    setTimeout(() => {
-      console.log("User Registered:", data);
+  
+    try {
+      const response = await registerUser(data.name,data.email,data.password);
+      console.log("User registered:", response);
+      toast.success("Registration successful!"); // Success toast
+      alert("Registration successful!");
+    } catch (error: any) {
+      console.error("Registration error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Registration failed!");
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   return (

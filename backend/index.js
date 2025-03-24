@@ -28,10 +28,10 @@ app.get("/", (req, res) => {
 });
 
 // Routes
-app.use("/api/auth", authRoute);
+//app.use("/api/auth", authRoute);
 
 //notes rotes
-app.use("/api/notes",notesRoutes);
+//app.use("/api/notes",notesRoutes);
 
 // Start Server
 app.listen(port, () => {

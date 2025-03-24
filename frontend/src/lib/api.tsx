@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API_BASE_URL = "https://notes-management-prg8.onrender.com/api";
 
 // Create an Axios instance with default settings
 const api = axios.create({
@@ -66,7 +66,7 @@ export async function fetchNotes(page = 1) {
   // ✅ Create Note
   export async function createNote(title: string, content: string) {
     try {
-        alert(title);
+        
       const response = await api.post("/notes", { title, content });
       return response.data;
     } catch (error) {

@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow only specific frontend
+    origin: "https://notes-management-2.onrender.com/", // Allow only specific frontend
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
     credentials: true, // Allow cookies
   })

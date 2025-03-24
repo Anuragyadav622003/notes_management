@@ -127,7 +127,7 @@ export default function DashboardPage() {
               setEditingNote(note);
               if (!note) setIsModalOpen(false);
             }}
-            fetchNotes={mutate}
+           fetchNotes={() => mutate()}
           />
         </DialogContent>
       </Dialog>

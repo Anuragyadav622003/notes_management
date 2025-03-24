@@ -28,7 +28,7 @@ const formSchema = z.object({
 interface NoteFormProps {
   editingNote: Note | null;
   setEditingNote: (note: Note | null) => void;
-  fetchNotes: () => Promise<void>;
+  fetchNotes: () => Promise<any>;
 }
 
 

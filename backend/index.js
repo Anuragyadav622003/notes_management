@@ -3,9 +3,9 @@ import cors from "cors";
 import morgan from "morgan";
 
 import dotenv from "dotenv";
-import authRoute from "./src/router/auth-router.js"; // Ensure the file extension `.js`
+//import authRoute from "./src/router/auth-router.js"; // Ensure the file extension `.js`
  import connectDB from './src/model/db.js'// Ensure the database connection file uses `export`
-import notesRoutes from './src/router/notesRoutes.js'
+//import notesRoutes from './src/router/notesRoutes.js'
 dotenv.config();
 connectDB();
 const app = express();
@@ -23,15 +23,15 @@ app.get("/", (req, res) => {
 });
 
 // Routes
-app.use("/api/auth", authRoute);
+// app.use("/api/auth", authRoute);
 
 //notes rotes
-app.use("/api/notes",notesRoutes);
+// app.use("/api/notes",notesRoutes);
 
 // Start Server
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 
 

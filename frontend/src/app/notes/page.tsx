@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { NoteForm } from '@/components/note-form';
 // import { Button } from '@/components/ui/button';
 import { Note } from '@/lib/utils';
-import { fetchNotes, deleteNote } from '@/lib/api'; // Import API functions
+import { fetchNotes } from '@/lib/api'; // Import API functions
 
 export default function NotesPage() {
   //const [notes, setNotes] = useState<Note[]>([]);
@@ -12,7 +12,7 @@ export default function NotesPage() {
 
   const loadNotes = async () => {
     try {
-      const data = await fetchNotes();
+      //const data = await fetchNotes();
       // setNotes(Array.isArray(data.notes) ? data.notes : []);
     } catch (error) {
       console.error('Error fetching notes:', error);

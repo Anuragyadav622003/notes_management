@@ -30,7 +30,9 @@ export default function DashboardPage() {
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // ✅ Explicitly use `error` to prevent linting warning
   if (error) {
+    console.error("Error fetching notes:", error);
     return (
       <div className="max-w-3xl mx-auto mt-10 p-4">
         <Alert variant="destructive">
@@ -78,7 +80,8 @@ export default function DashboardPage() {
       await deleteNote(noteId);
       mutate();
       toast.success("Note deleted successfully!");
-    } catch (error) {
+    } catch (err) {
+      console.error("Delete failed:", err);
       toast.error("Failed to delete note. Please try again.");
     }
   };
@@ -88,7 +91,7 @@ export default function DashboardPage() {
       <h1 className="text-4xl font-bold mb-6 text-gray-900 text-center">Your Notes</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {data.notes.map((note) => (
+        {data.notes?.map((note) => (
           <motion.div key={note._id} whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 200 }}>
             <Card className="p-6 border rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 bg-gradient-to-r from-blue-50 to-blue-100">
               <h2 className="text-xl font-semibold text-gray-900 mb-3">{note.title}</h2>

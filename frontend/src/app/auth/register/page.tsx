@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Lock, Mail, User } from "lucide-react";
 import { registerUser } from "@/lib/api";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 // Zod Validation Schema
 const registerSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -22,6 +23,7 @@ const registerSchema = z.object({
 });
 
 export default function RegisterForm() {
+  const routes = useRouter();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -38,6 +40,7 @@ export default function RegisterForm() {
       const response = await registerUser(data.name, data.email, data.password);
       console.log("User registered:", response);
       toast.success("Registration successful!"); // Success toast
+      routes.push("/auth/login");
     } catch (error: any) {
       console.error("Registration error:", error.response?.data || error.message);
   

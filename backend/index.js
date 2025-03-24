@@ -4,7 +4,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import authRoute from "./router/auth-router.js"; // Ensure the file extension `.js`
- import connectDB from './model/Db.js'// Ensure the database connection file uses `export`
+ import connectDB from './model/db.js'// Ensure the database connection file uses `export`
 import notesRoutes from './router/notesRoutes.js'
 dotenv.config();
 connectDB();

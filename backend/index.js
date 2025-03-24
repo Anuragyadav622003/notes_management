@@ -37,14 +37,11 @@
 import express from "express";
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Simple API route
+// Define a simple route
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Start the server (for local development)
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Export for Vercel (NO `app.listen()`)
+export default app;

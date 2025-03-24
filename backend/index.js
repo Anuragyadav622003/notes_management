@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow only specific frontend
+    origin: "https://notes-management-u8p9.vercel.app", // Allow only specific frontend
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
     credentials: true, // Allow cookies
   })

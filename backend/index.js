@@ -44,4 +44,6 @@ app.get("/", (req, res) => {
 });
 
 // Export for Vercel (NO `app.listen()`)
-export default app;
+app.listen(5000,()=>{
+  console.log("server is running")
+})

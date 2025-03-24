@@ -9,7 +9,7 @@ import notesRoutes from './src/router/notesRoutes.js'
 dotenv.config();
 connectDB();
 const app = express();
-const port = process.env.PORT || 5000; // Provide a default port
+//const port = process.env.PORT || 5000; // Provide a default port
 
 // Middlewares
 app.use(express.json());
@@ -29,9 +29,9 @@ app.use("/api/auth", authRoute);
 app.use("/api/notes",notesRoutes);
 
 // Start Server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server is running on port ${port}`);
+// });
 
 
 

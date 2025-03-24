@@ -7,7 +7,7 @@ import dotenv from "dotenv";
  import connectDB from './src/model/db.js'// Ensure the database connection file uses `export`
 //import notesRoutes from './src/router/notesRoutes.js'
 dotenv.config();
-connectDB();
+// connectDB();
 const app = express();
 //const port = process.env.PORT || 5000; // Provide a default port
 
@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors());
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 
 // Test Route
 app.get("/", (req, res) => {

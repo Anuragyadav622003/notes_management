@@ -46,13 +46,20 @@ export default function DashboardPage() {
 
   if (!data) {
     return (
-      <div className="max-w-3xl mx-auto mt-10 p-4">
-        <div className="space-y-4">
-          {[...Array(3)].map((_, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
-              <Skeleton className="h-28 w-full rounded-lg bg-gray-200" />
-            </motion.div>
-          ))}
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="max-w-3xl w-full mx-auto p-4">
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ delay: i * 0.1 }}
+              >
+                <Skeleton className="h-28 w-full rounded-lg bg-gray-200" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -60,12 +67,18 @@ export default function DashboardPage() {
 
   if (!data.notes || data.notes.length === 0) {
     return (
-      <div className="max-w-3xl mx-auto mt-10 p-4 text-center">
-        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5 }}>
-          <FileText className="h-24 w-24 text-gray-400 mx-auto" />
-        </motion.div>
-        <h2 className="text-xl font-semibold text-gray-900 mt-4">No Notes Available</h2>
-        <p className="text-gray-600">Start by adding a new note.</p>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="max-w-3xl mx-auto p-4 text-center">
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }} 
+            animate={{ scale: 1, opacity: 1 }} 
+            transition={{ duration: 0.5 }}
+          >
+            <FileText className="h-24 w-24 text-gray-400 mx-auto" />
+          </motion.div>
+          <h2 className="text-xl font-semibold text-gray-900 mt-4">No Notes Available</h2>
+          <p className="text-gray-600">Start by adding a new note.</p>
+        </div>
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-const API_BASE_URL = "https://notes-management-prg8.onrender.com//api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 // Create an Axios instance with default settings
 const api = axios.create({

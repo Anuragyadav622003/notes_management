@@ -2,32 +2,32 @@
 
 import { useEffect, useState } from 'react';
 import { NoteForm } from '@/components/note-form';
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
 import { Note } from '@/lib/utils';
 import { fetchNotes, deleteNote } from '@/lib/api'; // Import API functions
 
 export default function NotesPage() {
-  const [notes, setNotes] = useState<Note[]>([]);
+  //const [notes, setNotes] = useState<Note[]>([]);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   const loadNotes = async () => {
     try {
       const data = await fetchNotes();
-      setNotes(Array.isArray(data.notes) ? data.notes : []);
+      // setNotes(Array.isArray(data.notes) ? data.notes : []);
     } catch (error) {
       console.error('Error fetching notes:', error);
-      setNotes([]);
+      // setNotes([]);
     }
   };
 
-  const handleDeleteNote = async (id: string) => {
-    try {
-      await deleteNote(id);
-      await loadNotes(); // Refresh list after deletion
-    } catch (error) {
-      console.error('Error deleting note:', error);
-    }
-  };
+  // const handleDeleteNote = async (id: string) => {
+  //   try {
+  //     await deleteNote(id);
+  //     await loadNotes(); // Refresh list after deletion
+  //   } catch (error) {
+  //     console.error('Error deleting note:', error);
+  //   }
+  // };
 
   useEffect(() => {
     loadNotes();

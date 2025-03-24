@@ -14,14 +14,30 @@ const port = process.env.PORT || 5000; // Provide a default port
 // Middlewares
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "https://notes-management-2.onrender.com/", // Allow only specific frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
-    credentials: true, // Allow cookies
-  })
-);
+// const allowedOrigins = [
+//   "https://notes-management-2.onrender.com",
+//   "http://localhost:3000" // For local development
+// ];
+
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // Allow requests with no origin (like mobile apps or curl requests)
+//       if (!origin) return callback(null, true);
+      
+//       if (allowedOrigins.indexOf(origin) === -1) {
+//         const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//         return callback(new Error(msg), false);
+//       }
+//       return callback(null, true);
+//     },
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true
+//   })
+// );
 app.use(morgan("dev"));
+app.use(cors());
 
 // Test Route
 app.get("/", (req, res) => {

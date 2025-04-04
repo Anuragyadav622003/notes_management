@@ -35,7 +35,7 @@ export default function NotesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-4xl">
+      <div className="container mx-auto px-4 max-w-4xl mt-10">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">My Notes</h1>
           <p className="text-gray-600">Organize your thoughts and ideas.</p>
